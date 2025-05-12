@@ -7,8 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class WeatherSchedulerService
-{
+public class WeatherSchedulerService {
 	private final MockWeatherService mockWeatherService;
 	private final WeatherAlertService weatherAlertService;
 
@@ -16,28 +15,23 @@ public class WeatherSchedulerService
 		this.mockWeatherService = mockWeatherService;
 		this.weatherAlertService = weatherAlertService;
 	}
+
 	@Scheduled(fixedRate = 1800000)
-	public void fetchWeather()
-	{
+	public void fetchWeather() {
 		try {
-			List<WeatherAlert> alerts=mockWeatherService.fetchMockData();
+			List<WeatherAlert> alerts = mockWeatherService.fetchMockData();
 			weatherAlertService.saveAlerts(alerts);
-		}
-		catch (Exception e)
-		{
-			System.err.println("weather fetch failed: "+e.getMessage());
+		} catch (Exception e) {
+			System.err.println("weather fetch failed: " + e.getMessage());
 		}
 	}
 
 	@Scheduled(cron = "0 0 0 * * ?")
-	public void purgeOldAlerts()
-	{
+	public void purgeOldAlerts() {
 		try {
 			weatherAlertService.purgeOldAlerts();
-		}
-		catch (Exception e)
-		{
-			System.err.println("Alert purge failed: "+e.getMessage());
+		} catch (Exception e) {
+			System.err.println("Alert purge failed: " + e.getMessage());
 		}
 	}
 }

@@ -18,8 +18,7 @@ public class WeatherAlertController {
 	}
 
 	@GetMapping("/current")
-	public List<WeatherAlertDTO> getCurrentAlerts()
-	{
+	public List<WeatherAlertDTO> getCurrentAlerts() {
 		return weatherAlertService.getCurrentAlerts();
 	}
 

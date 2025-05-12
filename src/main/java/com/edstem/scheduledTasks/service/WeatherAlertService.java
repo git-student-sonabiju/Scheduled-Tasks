@@ -17,26 +17,24 @@ public class WeatherAlertService {
 		this.weatherAlertRepository = weatherAlertRepository;
 	}
 
-	public void saveAlerts(List<WeatherAlert> alerts)
-	{
+	public void saveAlerts(List<WeatherAlert> alerts) {
 		weatherAlertRepository.saveAll(alerts);
 	}
 
-	public List<WeatherAlertDTO> getCurrentAlerts()
-	{
-		LocalDateTime cutOff=LocalDateTime.now().minusHours(1);
+	public List<WeatherAlertDTO> getCurrentAlerts() {
+		LocalDateTime cutOff = LocalDateTime.now().minusHours(1);
 		return weatherAlertRepository.findByTimeStampAfter(cutOff).stream()
 				.map(this::toDTO)
 				.collect(Collectors.toList());
 	}
 
 	public void purgeOldAlerts() {
-		LocalDateTime cutOff=LocalDateTime.now().minusDays(1);
+		LocalDateTime cutOff = LocalDateTime.now().minusDays(1);
 		weatherAlertRepository.deleteByTimeStampBefore(cutOff);
 	}
 
 	private WeatherAlertDTO toDTO(WeatherAlert alert) {
-		return new WeatherAlertDTO(alert.getLocation(), alert.getTemperature(), alert.getHumidity(), alert.getAlertLevel(),alert.getTimeStamp());
+		return new WeatherAlertDTO(alert.getLocation(), alert.getTemperature(), alert.getHumidity(), alert.getAlertLevel(), alert.getTimeStamp());
 	}
 
 }
